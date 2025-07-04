@@ -23,28 +23,31 @@ resource "azurerm_resource_group" "app_service" {
   location = var.location
 }
 
-#resource "azurerm_app_service_plan" "app_service" {
-#  name                = local.app_service_plan_name
-#  location            = azurerm_resource_group.app_service.location
-#  resource_group_name = azurerm_resource_group.app_service.name
-#
-#  sku {
-#    tier = var.asp_tier
-#    size = var.asp_size
-#    capacity = var.capacity
-#  }
-#}
-#
-#resource "azurerm_app_service" "app_service" {
-#  name                = local.app_service_name
-#  location            = azurerm_resource_group.app_service.location
-#  resource_group_name = azurerm_resource_group.app_service.name
-#  app_service_plan_id = azurerm_app_service_plan.app_service.id
-#  
-#  source_control {
-#    repo_url = "https://github.com/ned1313/nodejs-docs-hello-world"
-#    branch = "main"
-#    manual_integration = true
-#    use_mercurial = false
-#  }
-#}
+resource "azurerm_network_security_group" "example" {
+  name                = "example-security-group"
+  location            = azurerm_resource_group.app_service.location
+  resource_group_name = azurerm_resource_group.app_service.name
+}
+
+resource "azurerm_virtual_network" "example" {
+  name                = "example-network"
+  location            = azurerm_resource_group.app_service.location
+  resource_group_name = azurerm_resource_group.app_service.name
+  address_space       = ["10.0.0.0/16"]
+  dns_servers         = ["10.0.0.4", "10.0.0.5"]
+
+  subnet {
+    name             = "subnet1"
+    address_prefixes = ["10.0.1.0/24"]
+  }
+
+  subnet {
+    name             = "subnet2"
+    address_prefixes = ["10.0.2.0/24"]
+    security_group   = azurerm_network_security_group.example.id
+  }
+
+  tags = {
+    environment = "Production"
+  }
+}

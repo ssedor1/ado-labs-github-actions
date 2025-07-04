@@ -23,28 +23,28 @@ resource "azurerm_resource_group" "app_service" {
   location = var.location
 }
 
-resource "azurerm_app_service_plan" "app_service" {
-  name                = local.app_service_plan_name
-  location            = azurerm_resource_group.app_service.location
-  resource_group_name = azurerm_resource_group.app_service.name
-
-  sku {
-    tier = var.asp_tier
-    size = var.asp_size
-    capacity = var.capacity
-  }
-}
-
-resource "azurerm_app_service" "app_service" {
-  name                = local.app_service_name
-  location            = azurerm_resource_group.app_service.location
-  resource_group_name = azurerm_resource_group.app_service.name
-  app_service_plan_id = azurerm_app_service_plan.app_service.id
-  
-  source_control {
-    repo_url = "https://github.com/ned1313/nodejs-docs-hello-world"
-    branch = "main"
-    manual_integration = true
-    use_mercurial = false
-  }
-}
+#resource "azurerm_app_service_plan" "app_service" {
+#  name                = local.app_service_plan_name
+#  location            = azurerm_resource_group.app_service.location
+#  resource_group_name = azurerm_resource_group.app_service.name
+#
+#  sku {
+#    tier = var.asp_tier
+#    size = var.asp_size
+#    capacity = var.capacity
+#  }
+#}
+#
+#resource "azurerm_app_service" "app_service" {
+#  name                = local.app_service_name
+#  location            = azurerm_resource_group.app_service.location
+#  resource_group_name = azurerm_resource_group.app_service.name
+#  app_service_plan_id = azurerm_app_service_plan.app_service.id
+#  
+#  source_control {
+#    repo_url = "https://github.com/ned1313/nodejs-docs-hello-world"
+#    branch = "main"
+#    manual_integration = true
+#    use_mercurial = false
+#  }
+#}

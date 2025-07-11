@@ -9,10 +9,10 @@ locals {
   app_service_name = "${var.naming_prefix}-${random_integer.name_suffix.result}"
 }
 
-#resource "random_integer" "name_suffix" {
-#  min = 10000
-#  max = 99999
-#}
+resource "random_integer" "name_suffix" {
+  min = 10000
+  max = 99999
+}
 
 ##################################################################################
 # APP SERVICE
